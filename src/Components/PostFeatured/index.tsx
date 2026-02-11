@@ -1,11 +1,13 @@
-import { postRepository } from "@/repositories/post";
+import ErrorMessages from "../ErrorMessages";
 import { PostCoverImage } from "../PostCoverImage";
-import { PostHeading } from "../PostHeading";
 import { PostSummary } from "../PostSummary";
-import { findAllPublicPostsCached } from "@/lib/post/queries";
+import { findAllPublicPostsCached } from "@/lib/post/queries/public";
 
 export async function PostFeatured() {
     const posts = await findAllPublicPostsCached();
+
+    if (posts.length <= 0) return <ErrorMessages contentTitle="Ops!" content='Ainda não criamos nenhum post.' />
+
     const post = posts[0];
     const postLink = `/post/${post.slug}`;
     return (
